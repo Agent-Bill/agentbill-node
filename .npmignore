@@ -1,0 +1,30 @@
+# Source files (only publish built files)
+src/
+tests/
+examples/
+
+# Configuration files
+.eslintrc.json
+.prettierrc.json
+.nvmrc
+tsconfig.json
+tsup.config.ts
+jest.config.js
+
+# Development files
+coverage/
+.nyc_output/
+*.tsbuildinfo
+
+# Environment and IDE
+.env*
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation (keep README.md and LICENSE)
+*.md
+!README.md
