@@ -32,11 +32,11 @@ Mistral Large/Medium/Small, Codestral, Ministral, open models - Auto-captures to
 
 ### From GitHub (Recommended)
 ```bash
-npm install github:YOUR-ORG/agentbill-typescript
+npm install github:Agent-Bill/agentbill-node
 # or
-yarn add github:YOUR-ORG/agentbill-typescript
+yarn add github:Agent-Bill/agentbill-node
 # or
-pnpm add github:YOUR-ORG/agentbill-typescript
+pnpm add github:Agent-Bill/agentbill-node
 ```
 
 ### From npm
@@ -50,26 +50,71 @@ pnpm add @agentbill/sdk
 
 ### From Source
 ```bash
-git clone https://github.com/YOUR-ORG/agentbill-typescript.git
-cd agentbill-typescript
+git clone https://github.com/Agent-Bill/agentbill-node.git
+cd agentbill-node
 npm install
 npm run build
 npm link
 ```
 
-## File Structure
+## Project Structure
 
 ```
-agentbill-typescript/
-├── README.md
-├── package.json
-├── tsconfig.json
-├── index.ts
-├── tracer.ts
-├── types.ts
-├── wrapper.ts
-└── examples/
-    └── basic-usage.ts
+agentbill-nodejs/
+├── src/                    # Source TypeScript files
+│   ├── index.ts           # Main SDK entry point
+│   ├── wrapper.ts         # AI client wrappers
+│   ├── tracer.ts          # OpenTelemetry tracing
+│   └── types.ts           # TypeScript definitions
+├── tests/                 # Jest test suite
+│   └── __tests__/         # Test files
+├── examples/              # Usage examples
+│   └── openai-basic.ts    # Basic OpenAI integration
+├── dist/                  # Built output (generated)
+├── jest.config.js         # Jest configuration
+├── tsup.config.ts         # Build configuration
+├── tsconfig.json          # TypeScript configuration
+├── .eslintrc.json         # ESLint configuration
+├── .prettierrc.json       # Prettier configuration
+└── package.json           # Package configuration
+```
+
+## Development
+
+### Setup
+```bash
+git clone https://github.com/Agent-Bill/agentbill-node.git
+cd agentbill-node
+npm install
+```
+
+### Available Scripts
+```bash
+npm run build          # Build the package
+npm run dev            # Build with watch mode
+npm run test           # Run test suite
+npm run test:watch     # Run tests in watch mode
+npm run test:coverage  # Run tests with coverage report
+npm run lint           # Lint and fix code issues
+npm run lint:check     # Check for linting errors
+npm run format         # Format code with Prettier
+npm run format:check   # Check code formatting
+npm run typecheck      # Run TypeScript type checking
+npm run clean          # Clean build artifacts and coverage
+```
+
+### Testing
+The project includes a comprehensive test suite using Jest:
+```bash
+npm test              # Run all tests
+npm run test:watch    # Run tests in watch mode
+npm run test:coverage # Generate and view coverage report
+```
+
+### Building
+```bash
+npm run build         # Build for production
+npm run dev           # Build with watch mode for development
 ```
 
 ## Quick Start
@@ -100,6 +145,32 @@ const response = await openai.chat.completions.create({
 });
 
 // Tokens, costs, and latency automatically captured ✨
+```
+
+### Basic Example (see examples/openai-basic.ts)
+
+For a simple example without external dependencies:
+
+```typescript
+import { AgentBill } from '@agentbill/sdk';
+
+// Initialize AgentBill
+const agentBill = AgentBill.init({
+  apiKey: 'your-agentbill-api-key',
+  customerId: 'customer-123',
+  debug: true
+});
+
+// Track custom events
+async function trackCustomEvent() {
+  await agentBill.trackSignal({
+    event_name: 'user_action',
+    revenue: 10.50,
+    data: { action: 'premium_feature_used' }
+  });
+}
+
+trackCustomEvent().catch(console.error);
 ```
 
 ### Anthropic
@@ -239,7 +310,10 @@ const response = await openai.chat.completions.create({
 });
 
 // Optional: Add revenue to calculate profit
-await agentBill.trackSignal("ai_completion", 0.01);
+await agentBill.trackSignal({
+  event_name: "ai_completion",
+  revenue: 0.01
+});
 ```
 
 **Dashboard shows:**
@@ -312,10 +386,24 @@ import type {
 - OpenAI SDK 4.0+ (if using OpenAI)
 - Anthropic SDK 0.9+ (if using Anthropic)
 
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Make your changes and add tests
+4. Run tests: `npm test`
+5. Run linting: `npm run lint`
+6. Commit your changes: `git commit -m 'Add my feature'`
+7. Push to the branch: `git push origin feature/my-feature`
+8. Submit a pull request
+
 ## License
 
-MIT
+MIT - see [LICENSE](LICENSE) file for details
 
 ## Support
 
-For issues, questions, or feature requests, visit: https://github.com/yourusername/agentbill-sdk
+For issues, questions, or feature requests:
+- **GitHub Issues**: https://github.com/Agent-Bill/agentbill-node/issues
+- **Documentation**: https://github.com/Agent-Bill/agentbill-node
+- **Repository**: https://github.com/Agent-Bill/agentbill-node
